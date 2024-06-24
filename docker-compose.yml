@@ -1,10 +1,18 @@
-version: '3'
+# /my-nextjs-app/docker-compose.yml
+version: '3.8'
+
 services:
-  nextjs:
+  app:
     build: .
     ports:
       - "3000:3000"
-  
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+    command: npm run dev
+
   nginx:
     image: nginx:alpine
     ports:
@@ -12,9 +20,8 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - nextjs
+      - app
 
-  redis:
-    image: redis:alpine
-    ports:
-      - "6379:6379"
+networks:
+  default:
+    driver: bridge

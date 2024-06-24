@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next'
+/*import type { GetServerSideProps, NextPage } from 'next'
 import redis from '../lib/redis'
 
 interface HomeProps {
@@ -31,4 +31,29 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 }
 
-export default Home
+export default <Home>*/
+
+// /my-nextjs-app/pages/index.tsx
+import { useEffect, useState } from 'react';
+import { fetchData } from '../lib/dataFetcher';
+
+const HomePage = () => {
+  const [data, setData] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      const result = await fetchData();
+      setData(result);
+    };
+    getData();
+  }, []);
+
+  return (
+    <div>
+      <h1>Welcome to My Next.js App</h1>
+      {data ? <p>Data: {data}</p> : <p>Loading...</p>}
+    </div>
+  );
+};
+
+export default HomePage;
